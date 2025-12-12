@@ -81,7 +81,7 @@ def main() -> None:
         logger.error("Cannot use --last-28-days with manual date arguments")
         print("❌ Error: --last-28-days cannot be used with manual date arguments")
         print("   Use either --last-28-days OR provide date(s) in MM-DD-YYYY format")
-        return
+        sys.exit(1)
 
     # Set up HTTP client with cookie authentication
     logger.info("Using cookie-based authentication")
