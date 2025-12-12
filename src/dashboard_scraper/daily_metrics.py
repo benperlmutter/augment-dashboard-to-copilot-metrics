@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Iterator
 from .client import DashboardClient
 from .config import Settings
 from .export import write_csv
+from .copilot_converter import convert_csv_to_copilot_json
 
 logger = logging.getLogger(__name__)
 
@@ -229,11 +230,56 @@ def process_last_28_days(
         print(f"  - {csv_file}")
     print()
 
-    # TODO: Milestone 4 - Generate Copilot JSON
+    # Generate Copilot JSON files from CSV files
+    print("=" * 80)
+    print("📄 Converting CSV to Copilot JSON format")
+    print("=" * 80)
+
+    json_files: List[Path] = []
+    start_str = start.strftime("%Y-%m-%d")
+    end_str = end.strftime("%Y-%m-%d")
+
+    for csv_file in csv_files:
+        # Extract date from filename (augment_metrics_YYYY-MM-DD.csv)
+        date_str = csv_file.stem.replace("augment_metrics_", "")
+
+        # Create JSON filename
+        json_filename = f"copilot_metrics_{date_str}.json"
+        json_path = daily_dir / json_filename
+
+        try:
+            # Convert CSV to JSON
+            num_records = convert_csv_to_copilot_json(
+                csv_file,
+                json_path,
+                start_str,
+                end_str,
+                enterprise_id=settings.enterprise_id
+            )
+
+            json_files.append(json_path)
+            print(f"✅ {csv_file.name} -> {json_filename} ({num_records} users)")
+
+        except Exception as e:
+            logger.error("Failed to convert %s to JSON: %s", csv_file, e)
+            print(f"❌ Failed to convert {csv_file.name}: {e}")
+
+    print()
+    print("=" * 80)
+    print("📊 Final Summary")
+    print("=" * 80)
+    print(f"Total days processed: {total_days}")
+    print(f"Successful: {successful_days}")
+    print(f"Failed: {failed_days}")
+    print(f"CSV files generated: {len(csv_files)}")
+    print(f"JSON files generated: {len(json_files)}")
+    print()
 
     logger.info("28-day processing complete: %d successful, %d failed", successful_days, failed_days)
-    print("✅ Daily CSV files generated successfully!")
+    print("✅ Processing complete!")
     print(f"📁 Output directory: {daily_dir}")
     print()
-    print("⚠️  Copilot JSON generation will be implemented in Milestone 4")
+    print("Files generated:")
+    print(f"  - {len(csv_files)} CSV files (Augment format)")
+    print(f"  - {len(json_files)} JSON files (Copilot format)")
 

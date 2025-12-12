@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     export_dir: str = "data"
     log_level: str = "INFO"
 
+    # Copilot conversion settings
+    enterprise_id: str = "283613"  # Default enterprise ID for Copilot JSON
+
     # HTTP
     request_timeout_seconds: int = 30
     max_retries: int = 3
