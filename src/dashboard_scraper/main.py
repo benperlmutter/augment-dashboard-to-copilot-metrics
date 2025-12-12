@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from .client import DashboardClient
 from .config import load_settings
 from .cookie_auth import CookieAuth, interactive_cookie_setup
-from .date_utils import compute_lookback_window
+from .date_utils import compute_lookback_window, compute_last_28_days
 from .export import write_csv
 from .http import HTTPClient, AuthenticationExpiredError
 from .logging_config import setup_logging
@@ -45,6 +45,9 @@ Examples:
   # Date range: metrics from start date 00:00 to end date 23:59:59
   python -m dashboard_scraper 10-20-2025 10-21-2025
 
+  # Last 28 days (for Copilot-compatible daily metrics)
+  python -m dashboard_scraper --last-28-days
+
 Authentication:
   # Manual cookie setup (interactive)
   python -m dashboard_scraper --auth
@@ -54,6 +57,8 @@ Authentication:
     p.add_argument("dates", nargs="*", help="Date(s) in MM-DD-YYYY format. One date = single day, two dates = range")
     p.add_argument("--out", help="Output filename (CSV)")
     p.add_argument("--auth", action="store_true", help="Set up cookie-based authentication (interactive)")
+    p.add_argument("--last-28-days", action="store_true",
+                   help="Generate daily metrics for last 28 days (28 days ago to yesterday) in Copilot-compatible format")
     p.add_argument("--log-level", default=None, help="Override log level (INFO/DEBUG/...)")
     return p.parse_args()
 
@@ -69,6 +74,13 @@ def main() -> None:
     if args.auth:
         logger.info("Setting up cookie-based authentication")
         interactive_cookie_setup(s.cookie_file_path())
+        return
+
+    # Check for mutual exclusivity between --last-28-days and date arguments
+    if args.last_28_days and args.dates:
+        logger.error("Cannot use --last-28-days with manual date arguments")
+        print("❌ Error: --last-28-days cannot be used with manual date arguments")
+        print("   Use either --last-28-days OR provide date(s) in MM-DD-YYYY format")
         return
 
     # Set up HTTP client with cookie authentication
@@ -87,6 +99,17 @@ def main() -> None:
 
     # Parse date arguments and fetch metrics
     try:
+
+        if args.last_28_days:
+            # Handle --last-28-days: generate daily metrics for Copilot compatibility
+            from .daily_metrics import process_last_28_days
+
+            start, end = compute_last_28_days()
+            logger.info("Processing last 28 days: %s to %s", start.date(), end.date())
+
+            process_last_28_days(client, s, start, end)
+            return
+
         if args.dates:
             if len(args.dates) == 1:
                 # Single date: get metrics for that 24-hour period (or up to now if today)
