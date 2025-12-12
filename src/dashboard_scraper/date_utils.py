@@ -47,6 +47,9 @@ def compute_last_28_days(now: datetime | None = None) -> tuple[datetime, datetim
     if now is None:
         now = datetime.now(timezone.utc)
 
+    # Ensure we're working in UTC
+    now = now.astimezone(timezone.utc)
+
     # Yesterday at end of day (23:59:59.999999)
     yesterday = (now - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
 
