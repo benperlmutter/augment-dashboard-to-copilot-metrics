@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Iterator
 
@@ -23,8 +23,14 @@ def _generate_date_range(start: datetime, end: datetime) -> List[datetime]:
         List of datetime objects, one for each day
     """
     dates = []
+    # Preserve timezone while normalizing to start of day
     current = start.replace(hour=0, minute=0, second=0, microsecond=0)
+    if current.tzinfo is None and start.tzinfo is not None:
+        current = current.replace(tzinfo=start.tzinfo)
+
     end_date = end.replace(hour=0, minute=0, second=0, microsecond=0)
+    if end_date.tzinfo is None and end.tzinfo is not None:
+        end_date = end_date.replace(tzinfo=end.tzinfo)
 
     while current <= end_date:
         dates.append(current)
@@ -38,7 +44,7 @@ def _fetch_single_day_metrics(
     date: datetime,
     day_num: int,
     total_days: int
-) -> List[Dict[str, Any]]:
+) -> List[Dict[str, Any]] | None:
     """
     Fetch metrics for a single day.
 
@@ -59,7 +65,8 @@ def _fetch_single_day_metrics(
         total_days: Total number of days being processed
 
     Returns:
-        List of metric records for this day
+        List of metric records for this day, or None if an error occurred.
+        An empty list indicates a successful fetch with zero records.
     """
     # Start of day (00:00:00)
     day_start = date.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -83,7 +90,7 @@ def _fetch_single_day_metrics(
     except Exception as e:
         logger.error("Failed to fetch metrics for %s: %s", date.date(), e)
         print(f"   ❌ Error: {e}")
-        return []
+        return None
 
 
 def process_last_28_days(
@@ -132,11 +139,13 @@ def process_last_28_days(
     for i, date in enumerate(dates, 1):
         records = _fetch_single_day_metrics(client, date, i, total_days)
 
-        if records:
+        if records is not None:
+            # Successfully fetched (may be empty list if no data for this day)
             date_key = date.strftime("%Y-%m-%d")
             daily_data[date_key] = records
             successful_days += 1
         else:
+            # Error occurred during fetch
             failed_days += 1
 
     # Summary
