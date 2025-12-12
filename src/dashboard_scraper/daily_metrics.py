@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Iterator
 
 from .client import DashboardClient
 from .config import Settings
+from .export import write_csv
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,28 @@ def _generate_date_range(start: datetime, end: datetime) -> List[datetime]:
         current += timedelta(days=1)
 
     return dates
+
+
+def _create_daily_export_dir(export_dir: Path, start: datetime, end: datetime) -> Path:
+    """
+    Create directory for daily CSV exports.
+
+    Args:
+        export_dir: Base export directory
+        start: Start date
+        end: End date
+
+    Returns:
+        Path to the daily exports directory
+    """
+    start_str = start.strftime("%Y-%m-%d")
+    end_str = end.strftime("%Y-%m-%d")
+
+    daily_dir = export_dir / f"daily_exports_{start_str}_to_{end_str}"
+    daily_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Created daily export directory: %s", daily_dir)
+    return daily_dir
 
 
 def _fetch_single_day_metrics(
@@ -94,6 +117,40 @@ def _fetch_single_day_metrics(
 
 
 
+def _write_daily_csv(
+    records: List[Dict[str, Any]],
+    daily_dir: Path,
+    date: datetime
+) -> Path:
+    """
+    Write daily metrics to a CSV file.
+
+    Args:
+        records: List of metric records for the day
+        daily_dir: Directory to write CSV files to
+        date: The date for this data
+
+    Returns:
+        Path to the written CSV file
+    """
+    date_str = date.strftime("%Y-%m-%d")
+    filename = f"augment_metrics_{date_str}.csv"
+
+    # Use the existing write_csv function
+    csv_path = write_csv(
+        records,
+        daily_dir,
+        filename=filename,
+        start_date=date,
+        end_date=date
+    )
+
+    logger.info("Wrote daily CSV: %s", csv_path)
+    print(f"   📄 Wrote CSV: {csv_path.name}")
+
+    return csv_path
+
+
 def process_last_28_days(
     client: DashboardClient,
     settings: Settings,
@@ -140,12 +197,18 @@ def process_last_28_days(
     print(f"Total days to process: {total_days}")
     print()
 
+    # Create output directory for daily CSV files
+    daily_dir = _create_daily_export_dir(settings.export_dir_path(), start, end)
+    print(f"Output directory: {daily_dir}")
+    print()
+
     # Track results
     daily_data: Dict[str, List[Dict[str, Any]]] = {}
+    csv_files: List[Path] = []
     successful_days = 0
     failed_days = 0
 
-    # Fetch metrics for each day
+    # Fetch metrics for each day and write CSV files
     for i, date in enumerate(dates, 1):
         records = _fetch_single_day_metrics(client, date, i, total_days)
 
@@ -153,6 +216,11 @@ def process_last_28_days(
             # Successfully fetched (may be empty list if no data for this day)
             date_key = date.strftime("%Y-%m-%d")
             daily_data[date_key] = records
+
+            # Write daily CSV file
+            csv_path = _write_daily_csv(records, daily_dir, date)
+            csv_files.append(csv_path)
+
             successful_days += 1
         else:
             # Error occurred during fetch
@@ -166,6 +234,7 @@ def process_last_28_days(
     print(f"Total days processed: {total_days}")
     print(f"Successful: {successful_days}")
     print(f"Failed: {failed_days}")
+    print(f"CSV files generated: {len(csv_files)}")
     print()
 
     if successful_days == 0:
@@ -173,17 +242,17 @@ def process_last_28_days(
         print("❌ No data fetched. Please check your authentication and try again.")
         return
 
-    # TODO: Milestone 3 - Generate CSV files
+    # List generated CSV files
+    print("Generated CSV files:")
+    for csv_file in csv_files:
+        print(f"  - {csv_file}")
+    print()
+
     # TODO: Milestone 4 - Generate Copilot JSON
 
     logger.info("28-day processing complete: %d successful, %d failed", successful_days, failed_days)
-    print("✅ Data fetching complete!")
-    print("⚠️  CSV and JSON generation will be implemented in Milestones 3 and 4")
-=======
-    
-    # TODO: Implement daily metrics processing
-    # This will be implemented in Milestone 2
-    print("⚠️  --last-28-days feature is under development")
-    print(f"   Would process: {start.date()} to {end.date()}")
->>>>>>> origin/main
+    print("✅ Daily CSV files generated successfully!")
+    print(f"📁 Output directory: {daily_dir}")
+    print()
+    print("⚠️  Copilot JSON generation will be implemented in Milestone 4")
 
