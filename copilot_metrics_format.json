@@ -1,0 +1,358 @@
+[
+    {
+        "report_start_day": "2024-11-14",
+        "report_end_day": "2024-12-11",
+        "day": "2024-11-14",
+        "enterprise_id": "283613",
+        "user_id": 12345,
+        "user_login": "octocat",
+        "user_initiated_interaction_count": 45,
+        "code_generation_activity_count": 52,
+        "code_acceptance_activity_count": 38,
+        "totals_by_ide": [
+            {
+                "ide": "vscode",
+                "user_initiated_interaction_count": 35,
+                "code_generation_activity_count": 40,
+                "code_acceptance_activity_count": 30,
+                "loc_suggested_to_add_sum": 420,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 320,
+                "loc_deleted_sum": 8,
+                "last_known_plugin_version": {
+                    "sampled_at": "2024-11-14T23:59:19.7920000Z",
+                    "plugin": "copilot-chat",
+                    "plugin_version": "0.32.5"
+                },
+                "last_known_ide_version": {
+                    "sampled_at": "2024-11-14T23:59:19.7920000Z",
+                    "ide_version": "1.85.0"
+                }
+            },
+            {
+                "ide": "jetbrains",
+                "user_initiated_interaction_count": 10,
+                "code_generation_activity_count": 12,
+                "code_acceptance_activity_count": 8,
+                "loc_suggested_to_add_sum": 100,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 4,
+                "last_known_plugin_version": {
+                    "sampled_at": "2024-11-14T23:45:10.1234000Z",
+                    "plugin": "copilot",
+                    "plugin_version": "1.2.15"
+                },
+                "last_known_ide_version": {
+                    "sampled_at": "2024-11-14T23:45:10.1234000Z",
+                    "ide_version": "2023.3.2"
+                }
+            }
+        ],
+        "totals_by_feature": [
+            {
+                "feature": "code_completion",
+                "user_initiated_interaction_count": 0,
+                "code_generation_activity_count": 30,
+                "code_acceptance_activity_count": 25,
+                "loc_suggested_to_add_sum": 250,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 200,
+                "loc_deleted_sum": 0
+            },
+            {
+                "feature": "chat_panel",
+                "user_initiated_interaction_count": 25,
+                "code_generation_activity_count": 15,
+                "code_acceptance_activity_count": 10,
+                "loc_suggested_to_add_sum": 180,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 120,
+                "loc_deleted_sum": 0
+            },
+            {
+                "feature": "inline_chat",
+                "user_initiated_interaction_count": 15,
+                "code_generation_activity_count": 5,
+                "code_acceptance_activity_count": 3,
+                "loc_suggested_to_add_sum": 90,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 0
+            },
+            {
+                "feature": "agent_edit",
+                "user_initiated_interaction_count": 5,
+                "code_generation_activity_count": 2,
+                "code_acceptance_activity_count": 0,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 12
+            }
+        ],
+        "totals_by_language_feature": [
+            {
+                "language": "python",
+                "feature": "code_completion",
+                "code_generation_activity_count": 18,
+                "code_acceptance_activity_count": 15,
+                "loc_suggested_to_add_sum": 150,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 120,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "typescript",
+                "feature": "code_completion",
+                "code_generation_activity_count": 12,
+                "code_acceptance_activity_count": 10,
+                "loc_suggested_to_add_sum": 100,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 80,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "python",
+                "feature": "agent_edit",
+                "code_generation_activity_count": 2,
+                "code_acceptance_activity_count": 0,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 12
+            }
+        ],
+        "totals_by_model_feature": [
+            {
+                "model": "gpt-4",
+                "feature": "chat_panel",
+                "user_initiated_interaction_count": 20,
+                "code_generation_activity_count": 12,
+                "code_acceptance_activity_count": 8,
+                "loc_suggested_to_add_sum": 180,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 120,
+                "loc_deleted_sum": 0
+            },
+            {
+                "model": "gpt-3.5-turbo",
+                "feature": "chat_panel",
+                "user_initiated_interaction_count": 5,
+                "code_generation_activity_count": 3,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 50,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 35,
+                "loc_deleted_sum": 0
+            },
+            {
+                "model": "claude-3.5-sonnet",
+                "feature": "agent_edit",
+                "user_initiated_interaction_count": 5,
+                "code_generation_activity_count": 2,
+                "code_acceptance_activity_count": 0,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 12
+            }
+        ],
+        "totals_by_language_model": [
+            {
+                "language": "python",
+                "model": "gpt-4",
+                "code_generation_activity_count": 8,
+                "code_acceptance_activity_count": 6,
+                "loc_suggested_to_add_sum": 120,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 90,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "typescript",
+                "model": "gpt-4",
+                "code_generation_activity_count": 4,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 60,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 30,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "python",
+                "model": "claude-3.5-sonnet",
+                "code_generation_activity_count": 2,
+                "code_acceptance_activity_count": 0,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 85,
+                "loc_deleted_sum": 12
+            }
+        ],
+        "used_agent": true,
+        "used_chat": true,
+        "loc_suggested_to_add_sum": 520,
+        "loc_suggested_to_delete_sum": 0,
+        "loc_added_sum": 405,
+        "loc_deleted_sum": 12
+    },
+    {
+        "report_start_day": "2024-11-14",
+        "report_end_day": "2024-12-11",
+        "day": "2024-11-15",
+        "enterprise_id": "283613",
+        "user_id": 12345,
+        "user_login": "octocat",
+        "user_initiated_interaction_count": 32,
+        "code_generation_activity_count": 38,
+        "code_acceptance_activity_count": 28,
+        "totals_by_ide": [
+            {
+                "ide": "vscode",
+                "user_initiated_interaction_count": 32,
+                "code_generation_activity_count": 38,
+                "code_acceptance_activity_count": 28,
+                "loc_suggested_to_add_sum": 380,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 290,
+                "loc_deleted_sum": 5,
+                "last_known_plugin_version": {
+                    "sampled_at": "2024-11-15T23:59:19.7920000Z",
+                    "plugin": "copilot-chat",
+                    "plugin_version": "0.32.5"
+                },
+                "last_known_ide_version": {
+                    "sampled_at": "2024-11-15T23:59:19.7920000Z",
+                    "ide_version": "1.85.0"
+                }
+            }
+        ],
+        "totals_by_feature": [
+            {
+                "feature": "code_completion",
+                "user_initiated_interaction_count": 0,
+                "code_generation_activity_count": 25,
+                "code_acceptance_activity_count": 20,
+                "loc_suggested_to_add_sum": 220,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 180,
+                "loc_deleted_sum": 0
+            },
+            {
+                "feature": "chat_panel",
+                "user_initiated_interaction_count": 20,
+                "code_generation_activity_count": 10,
+                "code_acceptance_activity_count": 6,
+                "loc_suggested_to_add_sum": 115,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 65,
+                "loc_deleted_sum": 0
+            },
+            {
+                "feature": "agent_edit",
+                "user_initiated_interaction_count": 12,
+                "code_generation_activity_count": 3,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 45,
+                "loc_deleted_sum": 5
+            }
+        ],
+        "totals_by_language_feature": [
+            {
+                "language": "python",
+                "feature": "code_completion",
+                "code_generation_activity_count": 15,
+                "code_acceptance_activity_count": 12,
+                "loc_suggested_to_add_sum": 130,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 100,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "javascript",
+                "feature": "code_completion",
+                "code_generation_activity_count": 10,
+                "code_acceptance_activity_count": 8,
+                "loc_suggested_to_add_sum": 90,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 80,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "python",
+                "feature": "agent_edit",
+                "code_generation_activity_count": 3,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 45,
+                "loc_deleted_sum": 5
+            }
+        ],
+        "totals_by_model_feature": [
+            {
+                "model": "gpt-4",
+                "feature": "chat_panel",
+                "user_initiated_interaction_count": 15,
+                "code_generation_activity_count": 8,
+                "code_acceptance_activity_count": 5,
+                "loc_suggested_to_add_sum": 115,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 65,
+                "loc_deleted_sum": 0
+            },
+            {
+                "model": "claude-3.5-sonnet",
+                "feature": "agent_edit",
+                "user_initiated_interaction_count": 12,
+                "code_generation_activity_count": 3,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 45,
+                "loc_deleted_sum": 5
+            }
+        ],
+        "totals_by_language_model": [
+            {
+                "language": "python",
+                "model": "gpt-4",
+                "code_generation_activity_count": 6,
+                "code_acceptance_activity_count": 4,
+                "loc_suggested_to_add_sum": 80,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 60,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "javascript",
+                "model": "gpt-4",
+                "code_generation_activity_count": 2,
+                "code_acceptance_activity_count": 1,
+                "loc_suggested_to_add_sum": 35,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 20,
+                "loc_deleted_sum": 0
+            },
+            {
+                "language": "python",
+                "model": "claude-3.5-sonnet",
+                "code_generation_activity_count": 3,
+                "code_acceptance_activity_count": 2,
+                "loc_suggested_to_add_sum": 0,
+                "loc_suggested_to_delete_sum": 0,
+                "loc_added_sum": 45,
+                "loc_deleted_sum": 5
+            }
+        ],
+        "used_agent": true,
+        "used_chat": true,
+        "loc_suggested_to_add_sum": 380,
+        "loc_suggested_to_delete_sum": 0,
+        "loc_added_sum": 290,
+        "loc_deleted_sum": 5
+    }
+]

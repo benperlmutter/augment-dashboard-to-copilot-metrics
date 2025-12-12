@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/assets/root-CPPCRjRY.css"/><link rel="stylesheet" href="/assets/tailwind-B-5ISYWT.css"/><script type="text/javascript">(function() {
+    var i = "analytics",
+        analytics = window[i] = window[i] || [];
+    if (!analytics.initialize) {
+      if (analytics.invoked) {
+        window.console && console.error && console.error("Segment snippet included twice.");
+      } else {
+        analytics.invoked = true;
+        analytics.methods = [
+          "trackSubmit", "trackClick", "trackLink", "trackForm", "pageview",
+          "identify", "reset", "group", "track", "ready", "alias", "debug",
+          "page", "screen", "once", "off", "on", "addSourceMiddleware",
+          "addIntegrationMiddleware", "setAnonymousId", "addDestinationMiddleware",
+          "register"
+        ];
+        analytics.factory = function(method) {
+          return function() {
+            if (window[i].initialized) {
+              return window[i][method].apply(window[i], arguments);
+            }
+            var args = Array.prototype.slice.call(arguments);
+            if (["track", "screen", "alias", "group", "page", "identify"].indexOf(method) > -1) {
+              var canonicalLink = document.querySelector("link[rel='canonical']");
+              args.push({
+                __t: "bpc",
+                c: (canonicalLink && canonicalLink.getAttribute("href")) || void 0,
+                p: location.pathname,
+                u: location.href,
+                s: location.search,
+                t: document.title,
+                r: document.referrer
+              });
+            }
+            args.unshift(method);
+            analytics.push(args);
+            return analytics;
+          };
+        };
+        for (var n = 0; n < analytics.methods.length; n++) {
+          var key = analytics.methods[n];
+          analytics[key] = analytics.factory(key);
+        }
+        analytics.load = function(key, options) {
+          var script = document.createElement("script");
+          script.type = "text/javascript";
+          script.async = true;
+          script.setAttribute("data-global-segment-analytics-key", i);
+          script.src = "https://evs.grdt.augmentcode.com/analytics.js/v1/188cjy04MNkMxj4pxrUFaEcpXtChy38q/analytics.min.js";
+          var firstScript = document.getElementsByTagName("script")[0];
+          firstScript.parentNode.insertBefore(script, firstScript);
+          analytics._loadOptions = options;
+        };
+        analytics._cdn = "https://evs.grdt.augmentcode.com";
+        analytics._writeKey = "188cjy04MNkMxj4pxrUFaEcpXtChy38q";
+        analytics.SNIPPET_VERSION = "5.2.0";
+        analytics.load(analytics._writeKey);
+        analytics.ready(() => {
+          window.posthog.init(
+            "phc_Kc4h1nMQmkyKUo9uGYXOCt25GiiXwguFcnWr1Xhl6bW",
+            {
+              api_host: "https://us.i.posthog.com",
+              segment: window.analytics,
+              capture_pageview: false,
+              capture_pageleave: true,
+            }
+          );
+          if (window.analyticsInitialized) {
+            window.analyticsInitialized.resolve();
+          } else {
+            console.error("analytics deferred promise not found");
+          }
+        });
+      }
+    }
+  })();
+  </script><script type="text/javascript">(function(document, posthog) {
+    var methodList, methodIndex, scriptElement, firstScript;
+    if (!posthog.__SV) {
+      window.posthog = posthog;
+      posthog._i = [];
+      posthog.init = function(apiKey, config, namespace) {
+        // Create a stub function that collects method calls until the real library loads.
+        function createStub(target, methodName) {
+          var parts = methodName.split(".");
+          if (parts.length === 2) {
+            target = target[parts[0]];
+            methodName = parts[1];
+          }
+          target[methodName] = function() {
+            target.push([methodName].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        }
+        // Create and insert the script element to load the PostHog library.
+        scriptElement = document.createElement("script");
+        scriptElement.type = "text/javascript";
+        scriptElement.crossOrigin = "anonymous";
+        scriptElement.async = true;
+        scriptElement.src = config.api_host + "/static/array.js";
+        firstScript = document.getElementsByTagName("script")[0];
+        firstScript.parentNode.insertBefore(scriptElement, firstScript);
+        // Initialize the PostHog namespace.
+        var ph = posthog;
+        if (namespace !== undefined) {
+          ph = posthog[namespace] = [];
+        } else {
+          namespace = "posthog";
+        }
+        ph.people = ph.people || [];
+        ph.toString = function(stub) {
+          var label = "posthog";
+          if (namespace !== "posthog") {
+            label += "." + namespace;
+          }
+          if (!stub) {
+            label += " (stub)";
+          }
+          return label;
+        };
+        ph.people.toString = function() {
+          return ph.toString(1) + ".people (stub)";
+        };
+        // List of methods to be stubbed until the library loads.
+        methodList = "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep".split(" ");
+        for (methodIndex = 0; methodIndex < methodList.length; methodIndex++) {
+          createStub(ph, methodList[methodIndex]);
+        }
+        // Store initialization arguments for later use.
+        posthog._i.push([apiKey, config, namespace]);
+      };
+      posthog.__SV = 1;
+    }
+  })(document, window.posthog || []);
+  </script><script>window.FEATURE_FLAGS = {
+  "publish_user_session_events": false,
+  "customer_ui_windsurf_promotion_enabled": false,
+  "customer_ui_enable_promotion_content_validation": false,
+  "customer_ui_cursor_promotion_enabled": false,
+  "customer_ui_content_deletion_enabled": true,
+  "customer_ui_e2e_mode_enabled": false,
+  "customer_ui_enable_user_feature_stats": true,
+  "customer_ui_show_get_started": true,
+  "block_trial_to_community_conversions": true,
+  "block_paid_to_community_conversions": true,
+  "trial_payment_method_verification_enabled": true,
+  "auth_central_unified_signup_flow": true,
+  "user_source_form_enabled": true,
+  "payment_verification_update_enabled": true,
+  "customer_ui_analytics_enabled": true,
+  "maintenance_window_banners": [],
+  "customer_ui_enterprise_settings_enabled": true,
+  "customer_ui_code_review_analytics_enabled": true,
+  "test_flag_alpha": false,
+  "test_flag_beta": false,
+  "customer_ui_hide_subscription_subtitle": "enabled"
+}; window.AUTH_CENTRAL_BASE_URL = "https://auth-staging.augmentcode.com";</script></head><body><div data-is-root-theme="true" data-accent-color="indigo" data-gray-color="slate" data-has-background="true" data-panel-background="translucent" data-radius="medium" data-scaling="100%" class="radix-themes"><div></div><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="ToastViewport"></ol></div></div><script>((STORAGE_KEY, restoreKey) => {
+    if (!window.history.state || !window.history.state.key) {
+      let key = Math.random().toString(32).slice(2);
+      window.history.replaceState({
+        key
+      }, "");
+    }
+    try {
+      let positions = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
+      let storedY = positions[restoreKey || window.history.state.key];
+      if (typeof storedY === "number") {
+        window.scrollTo(0, storedY);
+      }
+    } catch (error) {
+      console.error(error);
+      sessionStorage.removeItem(STORAGE_KEY);
+    }
+  })("positions", null)</script><link rel="modulepreload" href="/assets/manifest-75120bb1.js"/><link rel="modulepreload" href="/assets/entry.client-Doqo187z.js"/><link rel="modulepreload" href="/assets/index-Bbax-FG7.js"/><link rel="modulepreload" href="/assets/index-DmWCfFrZ.js"/><link rel="modulepreload" href="/assets/index-BxQBlBKb.js"/><link rel="modulepreload" href="/assets/components-D9LjbBTV.js"/><link rel="modulepreload" href="/assets/error-BP0MU0Xj.js"/><link rel="modulepreload" href="/assets/app-store-JFa0HAku.js"/><link rel="modulepreload" href="/assets/json-KZKpMsm6.js"/><link rel="modulepreload" href="/assets/queryClient.client-MM_Bhc08.js"/><link rel="modulepreload" href="/assets/theme-uhUenHXA.js"/><link rel="modulepreload" href="/assets/container-C1jHuxbV.js"/><link rel="modulepreload" href="/assets/card-CRrHRc9A.js"/><link rel="modulepreload" href="/assets/link-CsRTJexy.js"/><link rel="modulepreload" href="/assets/text-DdtAsWbR.js"/><link rel="modulepreload" href="/assets/flex-MJfJo7pC.js"/><link rel="modulepreload" href="/assets/button-xKJc5UDM.js"/><link rel="modulepreload" href="/assets/Toast-CLBQ1Dca.js"/><link rel="modulepreload" href="/assets/index-DrFu-skq.js"/><link rel="modulepreload" href="/assets/analytics-service-B_THQpmq.js"/><link rel="modulepreload" href="/assets/index-aPAmzDnm.js"/><link rel="modulepreload" href="/assets/constants-yEyPktbN.js"/><link rel="modulepreload" href="/assets/margin.props-MJZWw8m6.js"/><link rel="modulepreload" href="/assets/index-Dxa0r6Ne.js"/><link rel="modulepreload" href="/assets/radius.prop-CexxCZkb.js"/><link rel="modulepreload" href="/assets/index-DR252akq.js"/><link rel="modulepreload" href="/assets/index-xhDCegoK.js"/><link rel="modulepreload" href="/assets/get-subtree-DMVFKPS2.js"/><link rel="modulepreload" href="/assets/layout.props-CmlQ6231.js"/><link rel="modulepreload" href="/assets/spinner-DV9Qmd0k.js"/><link rel="modulepreload" href="/assets/index-CBvlpD5i.js"/><link rel="modulepreload" href="/assets/promise-BR3-EcJg.js"/><link rel="modulepreload" href="/assets/x-D-F-5d5F.js"/><link rel="modulepreload" href="/assets/createLucideIcon-D-w_JRiJ.js"/><link rel="modulepreload" href="/assets/root-ChUhhnsE.js"/><link rel="modulepreload" href="/assets/animations-CkC2-nlv.js"/><link rel="modulepreload" href="/assets/feature-flags.client-DRL_juzx.js"/><link rel="modulepreload" href="/assets/user-B1K2C3mh.js"/><link rel="modulepreload" href="/assets/string-sh0E9lcF.js"/><link rel="modulepreload" href="/assets/style-CjCvvyI-.js"/><link rel="modulepreload" href="/assets/BaseHeader-Km15Y64X.js"/><link rel="modulepreload" href="/assets/zap-BozUgVSy.js"/><link rel="modulepreload" href="/assets/clock-hjQ70bvJ.js"/><link rel="modulepreload" href="/assets/user-C6apl_Z3.js"/><link rel="modulepreload" href="/assets/migration-pending-D-eBogHT.js"/><link rel="modulepreload" href="/assets/skeleton-CVva5kIH.js"/><link rel="modulepreload" href="/assets/box-BIkoofZf.js"/><link rel="modulepreload" href="/assets/index-DO1Bxd-M.js"/><link rel="modulepreload" href="/assets/events-BfG364RR.js"/><link rel="modulepreload" href="/assets/Callout-DxsSNpT_.js"/><link rel="modulepreload" href="/assets/guards-hP6sFqSE.js"/><link rel="modulepreload" href="/assets/preload-helper-D7HrI6pR.js"/><link rel="modulepreload" href="/assets/badge.props-DPEH8fWR.js"/><link rel="modulepreload" href="/assets/from-json-DeX5dIvU.js"/><link rel="modulepreload" href="/assets/enum-DgjJAyKu.js"/><link rel="modulepreload" href="/assets/circle-check-99E_XOYq.js"/><link rel="modulepreload" href="/assets/triangle-alert-B58wzSbq.js"/><link rel="modulepreload" href="/assets/_layout-CCjbHE_W.js"/><link rel="modulepreload" href="/assets/_layout.dashboard-CtwFnow-.js"/><link rel="modulepreload" href="/assets/TimezoneIndicator-BVAvfPtg.js"/><link rel="modulepreload" href="/assets/SectionHeader-DrkO6a7H.js"/><link rel="modulepreload" href="/assets/Badge-DZdEskAD.js"/><link rel="modulepreload" href="/assets/Tooltip-D7-gje4p.js"/><link rel="modulepreload" href="/assets/Select-DlwGVufm.js"/><link rel="modulepreload" href="/assets/number-DVVwL5zT.js"/><link rel="modulepreload" href="/assets/safe-big-int-mMGhZ_Sf.js"/><link rel="modulepreload" href="/assets/icon-button-D8hLxuCs.js"/><link rel="modulepreload" href="/assets/index-D5S93554.js"/><link rel="modulepreload" href="/assets/index-D5jsDBY6.js"/><link rel="modulepreload" href="/assets/constructFrom-jaZmsjto.js"/><link rel="modulepreload" href="/assets/subMonths-CDzuEmyK.js"/><link rel="modulepreload" href="/assets/index-DoPHR2-k.js"/><link rel="modulepreload" href="/assets/Enabled-a9axVHG0.js"/><link rel="modulepreload" href="/assets/Combination-CBJEFR8E.js"/><link rel="modulepreload" href="/assets/index-BrSbnOnR.js"/><link rel="modulepreload" href="/assets/require-react-element-FEHB0o1c.js"/><link rel="modulepreload" href="/assets/_layout.dashboard._index-CaHTyO9_.js"/><script>window.__remixContext = {"basename":"/","future":{"v3_fetcherPersist":true,"v3_relativeSplatPath":true,"v3_throwAbortReason":true,"v3_routeConfig":false,"v3_singleFetch":false,"v3_lazyRouteDiscovery":false,"unstable_optimizeDeps":false},"isSpaMode":false,"state":{"loaderData":{"root":{"authCentralBase":"https://auth-staging.augmentcode.com","earliestData":{"year":2024,"month":6,"day":11},"featureFlags":{"publish_user_session_events":false,"customer_ui_windsurf_promotion_enabled":false,"customer_ui_enable_promotion_content_validation":false,"customer_ui_cursor_promotion_enabled":false,"customer_ui_content_deletion_enabled":true,"customer_ui_e2e_mode_enabled":false,"customer_ui_enable_user_feature_stats":true,"customer_ui_show_get_started":true,"block_trial_to_community_conversions":true,"block_paid_to_community_conversions":true,"trial_payment_method_verification_enabled":true,"auth_central_unified_signup_flow":true,"user_source_form_enabled":true,"payment_verification_update_enabled":true,"customer_ui_analytics_enabled":true,"maintenance_window_banners":[],"customer_ui_enterprise_settings_enabled":true,"customer_ui_code_review_analytics_enabled":true,"test_flag_alpha":false,"test_flag_beta":false,"customer_ui_hide_subscription_subtitle":"enabled"},"user":{"userId":"be46477d-2c5a-4841-b62c-66e1db920696","tenantId":"352a91ac7d4283558ccfbc094a527746","tenantName":"dogfood-shard","shardNamespace":"staging-shard-0","email":"benperlmutter@augmentcode.com","roles":["ADMIN"],"createdAt":1761173255900,"sessionId":"66085d12-066b-4ebe-b495-f1e6ef0f02d5"},"analyticsKeys":{"SEGMENT_WRITE_KEY":"188cjy04MNkMxj4pxrUFaEcpXtChy38q","POSTHOG_KEY":"phc_Kc4h1nMQmkyKUo9uGYXOCt25GiiXwguFcnWr1Xhl6bW","SEGMENT_CDN":"https://evs.grdt.augmentcode.com","SEGMENT_SCRIPT_URL":"https://evs.grdt.augmentcode.com/analytics.js/v1/188cjy04MNkMxj4pxrUFaEcpXtChy38q/analytics.min.js","POSTHOG_HOST":"https://us.i.posthog.com"}},"routes/_layout.dashboard":{},"routes/_layout":null,"routes/_layout.dashboard._index":null},"actionData":null,"errors":null}};</script><script type="module" async="">import "/assets/manifest-75120bb1.js";
+import * as route0 from "/assets/root-ChUhhnsE.js";
+import * as route1 from "/assets/_layout-CCjbHE_W.js";
+import * as route2 from "/assets/_layout.dashboard-CtwFnow-.js";
+import * as route3 from "/assets/_layout.dashboard._index-CaHTyO9_.js";
+
+window.__remixRouteModules = {"root":route0,"routes/_layout":route1,"routes/_layout.dashboard":route2,"routes/_layout.dashboard._index":route3};
+
+import("/assets/entry.client-Doqo187z.js");</script></body></html>

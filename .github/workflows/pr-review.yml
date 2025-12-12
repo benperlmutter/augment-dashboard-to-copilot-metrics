@@ -1,0 +1,54 @@
+# Robust PR Review with Error Handling
+# Includes retry logic and fallback notifications
+
+name: Robust PR Review
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  review:
+    if: github.event.label.name == 'augment-peer-review'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Generate PR Review
+        id: review
+        uses: augmentcode/review-pr@v0
+        with:
+          augment_session_auth: ${{ secrets.AUGMENT_SESSION_AUTH }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pull_number: ${{ github.event.pull_request.number }}
+          repo_name: ${{ github.repository }}
+          instruction: "Role: You are an expert enterprise code reviewer for hyperscale systems. Your job is to review pull requests (PRs) for correctness, security, scalability, reliability, cost, and alignment with our engineering standards. Review Objectives: Security & Compliance (secret handling, input/output validation, authn/z, least-privilege IAM, dependency risks, SSRF/SQLi/XSS, unsafe deserialization, crypto misuse, secure headers, PII/PHI handling, GDPR/CCPA/SOC2/ISO 27001 alignment, auditability), Scalability & Performance (algorithmic complexity, memory/CPU hotspots, concurrency/thread-safety, async/backpressure, connection pooling, pagination, batching, caching, idempotency, rate limiting, circuit breaking, retry strategy with jitter, timeouts, n+1 queries), Reliability & Resilience (error handling, fallbacks, retries, partial failures, transactional integrity, data migrations, feature flags & safe rollouts, health checks, readiness/liveness), Cloud/Infra & Cost (IaC best practices, Kubernetes requests/limits, autoscaling, resource quotas, observability agents, cost-aware choices, tagging/ownership, blast-radius control), Observability (structured logs, log levels, metrics with cardinality hygiene, traces/span context propagation, SLO alignment, alerts), APIs & Contracts (backward compatibility, versioning/deprecation, pagination & filtering, rate limits, error schemas, idempotency keys, schema migrations), Data & DB (indexes, query plans, transaction boundaries, isolation levels, migration safety, retention policies), Testing (unit/integration/e2e, deterministic tests, coverage thresholds, negative-path tests, contract tests, performance/regression tests, flaky test mitigation), Code Health (clarity, cohesion, coupling, dead code, duplication, naming, small focused PRs, documented decisions, updated READMEs/runbooks/CHANGELOG, ADRs when architecture shifts), Git Hygiene (meaningful commits, descriptive PR title/body, links to issues/rollout plan, migration/rollback notes). Output Format: 1) Summary (2-5 bullets): Key risks, why they matter, and overall readiness. 2) Decision: APPROVE, APPROVE WITH NITS, or REQUEST CHANGES. 3) Issue Table with Severity (Blocker/Major/Minor/Nit), File:Line, Category, Rule/Standard, Finding, Recommendation, Example Patch. 4) Inline Review Notes: File-by-file comments with code blocks showing safer/faster patterns. 5) Checks Completed: Security, Scalability, Reliability, Cost, Observability, Testing, Docs, Git Hygiene (mark with status and justification). 6) Follow-ups: Trackable tasks for post-merge items with owners. Constraints: Be specific and evidence-based; quote code lines/hunks. Prefer minimal, high-leverage changes. Never suggest storing or exposing secrets. Respect existing patterns unless there's a strong reason. Keep total output under 800 words unless Blockers > 5. ALWAYS post a comprehensive summary comment with your findings back on the PR."
+        continue-on-error: true
+
+      - name: Notify on failure
+        if: steps.review.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `⚠️ **Auto-review failed**
+
+              The automatic PR review generation encountered an error. Please add a review manually.
+
+              You can check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.`
+            })
+
+      - name: Add failure label
+        if: steps.review.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['needs-review']
+            })

@@ -1,0 +1,87 @@
+[
+  {
+    "date": "2025-12-11",
+    "total_active_users": 110,
+    "total_engaged_users": 98,
+    "augment_ide_code_completions": {
+      "total_engaged_users": 85,
+      "languages": [
+        {
+          "name": "python",
+          "total_engaged_users": 42
+        },
+        {
+          "name": "typescript",
+          "total_engaged_users": 38
+        }
+      ],
+      "editors": [
+        {
+          "name": "vscode",
+          "total_engaged_users": 65,
+          "total_completions": 45000,
+          "total_accepted_completions": 18000,
+          "total_completion_lines_of_code": 85000,
+          "average_accept_rate": 40.0
+        },
+        {
+          "name": "intellij",
+          "total_engaged_users": 20,
+          "total_completions": 12000,
+          "total_accepted_completions": 5000,
+          "total_completion_lines_of_code": 22000,
+          "average_accept_rate": 41.67
+        }
+      ]
+    },
+    "augment_ide_chat": {
+      "total_engaged_users": 45,
+      "total_chat_messages": 1200,
+      "total_agent_messages": 3500,
+      "editors": [
+        {
+          "name": "vscode",
+          "total_engaged_users": 35,
+          "total_chat_messages": 900,
+          "total_agent_messages": 2800
+        },
+        {
+          "name": "intellij",
+          "total_engaged_users": 10,
+          "total_chat_messages": 300,
+          "total_agent_messages": 700
+        }
+      ]
+    },
+    "augment_agent": {
+      "total_engaged_users": 78,
+      "total_agent_messages": 35000,
+      "total_tool_uses": 250000,
+      "total_agent_lines_of_code": 1500000,
+      "environments": [
+        {
+          "name": "ide",
+          "total_engaged_users": 70,
+          "total_agent_messages": 30000,
+          "total_tool_uses": 220000,
+          "total_agent_lines_of_code": 1300000
+        },
+        {
+          "name": "remote",
+          "total_engaged_users": 15,
+          "total_remote_agent_messages": 4000,
+          "total_tool_uses": 25000,
+          "total_remote_agent_lines_of_code": 180000
+        }
+      ]
+    },
+    "augment_cli_agent": {
+      "total_engaged_users": 55,
+      "total_interactive_messages": 8000,
+      "total_non_interactive_messages": 12000,
+      "total_cli_agent_lines_of_code": 850000,
+      "total_tool_uses": 45000
+    }
+  }
+]
+

@@ -1,0 +1,81 @@
+================================================================================
+GitHub Copilot Metrics Data Schema
+================================================================================
+ 
+📝 report_start_day: (string) = "2025-11-14"
+📝 report_end_day: (string) = "2025-12-11"
+📝 day: (string) = "2025-11-15"
+📝 enterprise_id: (string) = "283613"
+🔢 user_id: (integer) = 203,708,966
+📝 user_login: (string) = "Pavithra-ManupatiRameshBabu_BHN25"
+🔢 user_initiated_interaction_count: (integer) = 7
+🔢 code_generation_activity_count: (integer) = 23
+🔢 code_acceptance_activity_count: (integer) = 0
+📋 totals_by_ide: (array of objects) [2 items]
+   Sample item:
+    📝 ide: (string) = "vscode"
+    🔢 user_initiated_interaction_count: (integer) = 7
+    🔢 code_generation_activity_count: (integer) = 22
+    🔢 code_acceptance_activity_count: (integer) = 0
+    🔢 loc_suggested_to_add_sum: (integer) = 10
+    🔢 loc_suggested_to_delete_sum: (integer) = 0
+    🔢 loc_added_sum: (integer) = 790
+    🔢 loc_deleted_sum: (integer) = 384
+    📁 last_known_plugin_version: (object)
+      📝 sampled_at: (string) = "2025-11-15T23:59:19.7920000Z"
+      📝 plugin: (string) = "copilot-chat"
+      📝 plugin_version: (string) = "0.32.5"
+    📁 last_known_ide_version: (object)
+      📝 sampled_at: (string) = "2025-11-15T23:59:19.7920000Z"
+      📝 ide_version: (string) = "1.105.1"
+📋 totals_by_feature: (array of objects) [3 items]
+   Sample item:
+    📝 feature: (string) = "chat_panel_agent_mode"
+    🔢 user_initiated_interaction_count: (integer) = 7
+    🔢 code_generation_activity_count: (integer) = 3
+    🔢 code_acceptance_activity_count: (integer) = 0
+    🔢 loc_suggested_to_add_sum: (integer) = 10
+    🔢 loc_suggested_to_delete_sum: (integer) = 0
+    🔢 loc_added_sum: (integer) = 0
+    🔢 loc_deleted_sum: (integer) = 0
+📋 totals_by_language_feature: (array of objects) [3 items]
+   Sample item:
+    📝 language: (string) = "java"
+    📝 feature: (string) = "agent_edit"
+    🔢 code_generation_activity_count: (integer) = 19
+    🔢 code_acceptance_activity_count: (integer) = 0
+    🔢 loc_suggested_to_add_sum: (integer) = 0
+    🔢 loc_suggested_to_delete_sum: (integer) = 0
+    🔢 loc_added_sum: (integer) = 790
+    🔢 loc_deleted_sum: (integer) = 384
+📋 totals_by_language_model: (array of objects) [2 items]
+   Sample item:
+    📝 language: (string) = "java"
+    📝 model: (string) = "claude-4.0-sonnet"
+    🔢 code_generation_activity_count: (integer) = 19
+    🔢 code_acceptance_activity_count: (integer) = 0
+    🔢 loc_suggested_to_add_sum: (integer) = 0
+    🔢 loc_suggested_to_delete_sum: (integer) = 0
+    🔢 loc_added_sum: (integer) = 790
+    🔢 loc_deleted_sum: (integer) = 384
+📋 totals_by_model_feature: (array of objects) [2 items]
+   Sample item:
+    📝 model: (string) = "claude-4.0-sonnet"
+    📝 feature: (string) = "agent_edit"
+    🔢 user_initiated_interaction_count: (integer) = 0
+    🔢 code_generation_activity_count: (integer) = 19
+    🔢 code_acceptance_activity_count: (integer) = 0
+    🔢 loc_suggested_to_add_sum: (integer) = 0
+    🔢 loc_suggested_to_delete_sum: (integer) = 0
+    🔢 loc_added_sum: (integer) = 790
+    🔢 loc_deleted_sum: (integer) = 384
+✓ used_agent: (boolean) = True
+✓ used_chat: (boolean) = True
+🔢 loc_suggested_to_add_sum: (integer) = 11
+🔢 loc_suggested_to_delete_sum: (integer) = 0
+🔢 loc_added_sum: (integer) = 790
+🔢 loc_deleted_sum: (integer) = 384
+ 
+================================================================================
+Total fields in root: 20
+================================================================================
