@@ -9,6 +9,7 @@ from .client import DashboardClient
 from .config import Settings
 from .export import write_csv
 from .copilot_converter import convert_csv_to_copilot_json
+from .copilot_aggregator import aggregate_daily_json_files
 
 logger = logging.getLogger(__name__)
 
@@ -273,6 +274,31 @@ def process_last_28_days(
             print(f"❌ Failed to convert {csv_file.name}: {e}")
 
     print()
+
+    # Generate aggregated JSON file
+    if json_files:
+        print("=" * 80)
+        print("📊 Aggregating metrics across all days")
+        print("=" * 80)
+
+        aggregated_json_path = daily_dir / "copilot_metrics_aggregated.json"
+
+        try:
+            num_users = aggregate_daily_json_files(
+                json_files,
+                aggregated_json_path,
+                start_str,
+                end_str
+            )
+
+            print(f"✅ Created aggregated metrics file: {aggregated_json_path.name}")
+            print(f"   Total unique users: {num_users}")
+            print()
+        except Exception as e:
+            logger.error("Failed to aggregate JSON files: %s", e)
+            print(f"❌ Failed to create aggregated file: {e}")
+            print()
+
     print("=" * 80)
     print("📊 Final Summary")
     print("=" * 80)
@@ -290,4 +316,5 @@ def process_last_28_days(
     print("Files generated:")
     print(f"  - {len(csv_files)} CSV files (Augment format)")
     print(f"  - {len(json_files)} JSON files (Copilot format)")
+    print(f"  - 1 aggregated JSON file (copilot_metrics_aggregated.json)")
 

@@ -1,6 +1,6 @@
-# dashboard-scraper
+# Augment Dashboard to Copilot Metrics Converter
 
-A Python-based metrics scraper for extracting dashboard usage data via authenticated API calls and exporting to CSV.
+A Python tool that extracts usage metrics from Augment's dashboard API and converts them to GitHub Copilot Metrics API format. Perfect for organizations migrating from Augment to GitHub Copilot or comparing metrics between platforms.
 
 ## Features
 
@@ -75,7 +75,8 @@ cp .env.example .env
 Edit `.env` and set your API base URL:
 
 ```bash
-METRICS_API_BASE_URL=https://app.augmentcode.com/
+METRICS_API_BASE_URL=https://your-dashboard-url.com/
+ENTERPRISE_ID=your-github-enterprise-id
 ```
 
 ### 3. Authenticate
@@ -93,7 +94,7 @@ _session=<INSERT URL DECODED COOKIE FROM BROWSER HERE>
 ```
 
 **How to get your session cookie:**
-1. Open your dashboard (https://app.augmentcode.com/) in a browser
+1. Open your dashboard URL in a browser
 2. Log in with your credentials
 3. Open DevTools (F12 or Cmd+Option+I)
 4. Go to: Application → Cookies → [your dashboard URL]
@@ -128,20 +129,28 @@ This will:
 2. Fetch metrics for each day individually
 3. Generate daily CSV files in Augment format
 4. Convert each CSV to Copilot JSON format
-5. Organize files in a dated directory
+5. **Aggregate all 28 days into a single consolidated JSON file**
+6. Organize files in a dated directory
 
 **Output structure:**
 ```
 data/
 └── daily_exports_2024-11-14_to_2024-12-11/
-    ├── augment_metrics_2024-11-14.csv
-    ├── copilot_metrics_2024-11-14.json
+    ├── augment_metrics_2024-11-14.csv          # Daily CSV (Augment format)
+    ├── copilot_metrics_2024-11-14.json         # Daily JSON (Copilot format)
     ├── augment_metrics_2024-11-15.csv
     ├── copilot_metrics_2024-11-15.json
-    │   ...
+    │   ... (26 more days)
     ├── augment_metrics_2024-12-11.csv
-    └── copilot_metrics_2024-12-11.json
+    ├── copilot_metrics_2024-12-11.json
+    └── copilot_metrics_aggregated.json         ⭐ Main output (all 28 days combined)
 ```
+
+**Key Output Files:**
+- **Daily JSON files** (`copilot_metrics_YYYY-MM-DD.json`): Individual day metrics for granular analysis
+- **Aggregated JSON file** (`copilot_metrics_aggregated.json`): **Main output** - Combined metrics across all 28 days with per-user totals
+
+See [AGGREGATION_FEATURE.md](AGGREGATION_FEATURE.md) for details on the aggregated output format.
 
 **Features:**
 - Individual day processing with progress tracking
@@ -374,12 +383,25 @@ Your session has expired. Re-authenticate:
 python -m dashboard_scraper --auth
 ```
 
-### Empty CSV output
+### Empty CSV output or missing data
 
 - Verify the API endpoints are correct in your `.env` file
 - Ensure your session is valid (check for 401 errors in logs)
 - Ensure the API returns data for the specified date range
+- **Note:** `--last-28-days` fetches data from 28 days ago to yesterday (not including today)
 - Run with `--log-level DEBUG` to inspect API responses
+
+### Module not found errors
+
+If you see `ModuleNotFoundError: No module named 'dashboard_scraper'`:
+
+```bash
+# Activate virtual environment
+source .venv/bin/activate
+
+# Reinstall package
+pip install -e .
+```
 
 ### Pagination not working
 
