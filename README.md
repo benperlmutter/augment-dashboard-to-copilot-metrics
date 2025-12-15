@@ -7,6 +7,8 @@ A Python-based metrics scraper for extracting dashboard usage data via authentic
 - **Cookie-based authentication** - Simple session cookie setup from your browser
 - **Custom date ranges** - Query specific dates or date ranges
 - **30-day rolling window** data extraction (configurable)
+- **28-day daily metrics** - Generate daily CSV and Copilot JSON files for the last 28 days
+- **Copilot JSON conversion** - Automatic conversion to GitHub Copilot Metrics API format
 - **Automatic pagination** handling for complete data collection
 - **CSV export** with flattened nested data and stable column ordering
 - **Retry logic** with exponential backoff for resilient API calls
@@ -31,6 +33,8 @@ dashboard-scraper/
 │   ├── client.py            # Dashboard API client with pagination
 │   ├── config.py            # Pydantic settings loader
 │   ├── cookie_auth.py       # Cookie-based authentication
+│   ├── copilot_converter.py # CSV to Copilot JSON converter
+│   ├── daily_metrics.py     # 28-day daily metrics processing
 │   ├── date_utils.py        # Date range calculations
 │   ├── export.py            # CSV writer with flattening
 │   ├── http.py              # HTTP client with retries
@@ -111,6 +115,43 @@ python -m dashboard_scraper
 
 This fetches metrics for the past 30 days and writes to `data/metrics_YYYYMMDD.csv`.
 
+### 28-day daily metrics (NEW)
+
+Generate daily CSV and Copilot JSON files for the last 28 days:
+
+```bash
+python -m dashboard_scraper --last-28-days
+```
+
+This will:
+1. Calculate the date range (28 days ago to yesterday)
+2. Fetch metrics for each day individually
+3. Generate daily CSV files in Augment format
+4. Convert each CSV to Copilot JSON format
+5. Organize files in a dated directory
+
+**Output structure:**
+```
+data/
+└── daily_exports_2024-11-14_to_2024-12-11/
+    ├── augment_metrics_2024-11-14.csv
+    ├── copilot_metrics_2024-11-14.json
+    ├── augment_metrics_2024-11-15.csv
+    ├── copilot_metrics_2024-11-15.json
+    │   ...
+    ├── augment_metrics_2024-12-11.csv
+    └── copilot_metrics_2024-12-11.json
+```
+
+**Features:**
+- Individual day processing with progress tracking
+- Automatic retry logic for failed days
+- Summary report showing successful/failed days
+- Both Augment CSV and Copilot JSON formats
+- Organized directory structure with date range in name
+
+**Note:** This mode is mutually exclusive with custom date parameters.
+
 ### Custom date ranges
 
 Query specific dates or date ranges:
@@ -166,11 +207,13 @@ Add:
 
 **Important**: Ensure the cron environment has access to the `.env` file or set environment variables explicitly in the crontab.
 
-## Output Format
+## Output Formats
+
+### CSV Format (Augment)
 
 CSV files are written to the `data/` directory with:
 
-- **Filename**: `metrics_YYYYMMDD.csv` (date of export)
+- **Filename**: `metrics_YYYYMMDD.csv` or `augment_metrics_YYYY-MM-DD.csv` (for daily exports)
 - **Headers**: Dynamically generated from API response fields
 - **Column ordering**: Common fields (`timestamp`, `date`, `user_id`, `email`, `metric`, `value`) appear first, followed by alphabetically sorted remaining fields
 - **Nested data**: Flattened with dot notation (e.g., `user.email`, `usage.count`)
@@ -180,10 +223,73 @@ CSV files are written to the `data/` directory with:
 Example output:
 
 ```csv
-timestamp,user_id,email,metric,value,tool_name
-2025-10-01T00:00:00+00:00,user123,user@example.com,tool_usage,42,code_completion
-2025-10-01T01:00:00+00:00,user456,other@example.com,tool_usage,17,agent_chat
+User,First Seen,Last Seen,Active Days,Completions,Accepted Completions,Accept Rate,Chat Messages,Agent Messages,...
+user@example.com,2024-11-14,2024-12-11,28,450,180,40.0%,25,50,...
 ```
+
+### JSON Format (Copilot)
+
+When using `--last-28-days`, JSON files are automatically generated in GitHub Copilot Metrics API format:
+
+- **Filename**: `copilot_metrics_YYYY-MM-DD.json`
+- **Format**: Array of per-user records
+- **Schema**: Follows official GitHub Copilot per-user JSON schema
+
+Example output:
+
+```json
+[
+  {
+    "report_start_day": "2024-11-14",
+    "report_end_day": "2024-12-11",
+    "day": "2024-12-11",
+    "enterprise_id": "283613",
+    "user_id": 12345,
+    "user_login": "user@example.com",
+
+    "user_initiated_interaction_count": 85,
+    "code_generation_activity_count": 450,
+    "code_acceptance_activity_count": 180,
+
+    "totals_by_feature": [
+      {
+        "feature": "code_completion",
+        "code_generation_activity_count": 450,
+        "code_acceptance_activity_count": 180,
+        "loc_suggested_to_add_sum": 500,
+        "loc_added_sum": 500
+      },
+      {
+        "feature": "chat_panel",
+        "user_initiated_interaction_count": 25
+      },
+      {
+        "feature": "agent_edit",
+        "user_initiated_interaction_count": 60,
+        "loc_added_sum": 250
+      }
+    ],
+
+    "used_agent": true,
+    "used_chat": true,
+
+    "loc_suggested_to_add_sum": 500,
+    "loc_added_sum": 850
+  }
+]
+```
+
+**Field Mappings:**
+
+| Augment CSV | Copilot JSON |
+|-------------|--------------|
+| Completions | `code_generation_activity_count` |
+| Accepted Completions | `code_acceptance_activity_count` |
+| Chat Messages | `chat_panel.user_initiated_interaction_count` |
+| Agent Messages (all types) | `agent_edit.user_initiated_interaction_count` |
+| Completion Lines of Code | `code_completion.loc_added_sum` |
+| Agent Lines of Code (all types) | `agent_edit.loc_added_sum` |
+| Total Modified Lines of Code | `loc_added_sum` (root) |
 
 ## Configuration Reference
 
@@ -200,9 +306,41 @@ All settings can be configured via environment variables (`.env` file):
 | `LOOKBACK_DAYS` | `30` | Number of days to fetch in default mode |
 | `EXPORT_DIR` | `data` | Output directory for CSV files |
 | `LOG_LEVEL` | `INFO` | Logging level (DEBUG/INFO/WARNING/ERROR) |
+| `ENTERPRISE_ID` | `283613` | GitHub Enterprise ID for Copilot JSON conversion |
 | `REQUEST_TIMEOUT_SECONDS` | `30` | HTTP request timeout |
 | `MAX_RETRIES` | `3` | Maximum retry attempts for failed requests |
 | `RETRY_BACKOFF_SECONDS` | `0.5` | Initial backoff delay for retries (exponential) |
+
+## Copilot JSON Conversion
+
+The `--last-28-days` mode automatically converts Augment CSV metrics to GitHub Copilot Metrics API format. This enables:
+
+- **Compatibility** with GitHub Copilot analytics tools
+- **Standardized format** for cross-platform metrics comparison
+- **Per-user daily records** matching Copilot's schema
+
+### Conversion Details
+
+The converter (`copilot_converter.py`) implements the mapping defined in `CSV_TO_JSON_MAPPING.md`:
+
+1. **User Identification**: Generates numeric user IDs from email addresses using MD5 hash
+2. **Feature Breakdown**: Maps metrics to three Copilot features:
+   - `code_completion`: Code completions and acceptances
+   - `chat_panel`: Chat interactions
+   - `agent_edit`: Agent-assisted code modifications
+3. **Lines of Code**: Tracks suggested and accepted LOC at both root and feature levels
+4. **Boolean Flags**: Sets `used_agent` and `used_chat` based on activity
+5. **Date Handling**: Uses report end date as the `day` field
+
+### Customizing Enterprise ID
+
+Set your GitHub Enterprise ID in `.env`:
+
+```bash
+ENTERPRISE_ID=your-enterprise-id
+```
+
+This ID appears in all generated Copilot JSON files.
 
 ## Development
 
