@@ -48,3 +48,7 @@ data/
 
 # Environment
 .env
+
+# Generated files
+dashboard_page.html
+*.html

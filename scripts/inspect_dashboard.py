@@ -22,8 +22,9 @@ def main():
         sys.exit(1)
     
     cookies = cookie_auth.get_cookies_dict()
-    url = "https://app.staging.augmentcode.com/dashboard?yourUsageFilter=30"
-    
+    # Use the configured base URL from settings
+    url = f"{settings.metrics_api_base_url.rstrip('/')}/dashboard?yourUsageFilter=30"
+
     print(f"🔍 Fetching: {url}")
     print(f"   Using {len(cookies)} cookie(s)")
     print()
