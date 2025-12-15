@@ -159,20 +159,12 @@ def process_last_28_days(
 ) -> None:
     """
     Process metrics for the last 28 days and generate Copilot-compatible output.
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> origin/main
     This function:
     1. Fetches daily metrics for each of the 28 days
     2. Generates individual CSV files for each day
     3. Creates a consolidated JSON file in Copilot's per-user format
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> origin/main
     Args:
         client: DashboardClient instance for API calls
         settings: Settings instance for configuration
@@ -181,7 +173,6 @@ def process_last_28_days(
     """
     logger.info("Starting 28-day metrics processing")
     logger.info("Date range: %s to %s", start.date(), end.date())
-<<<<<<< HEAD
 
     print("\n" + "=" * 80)
     print("🚀 Starting 28-day metrics processing")
